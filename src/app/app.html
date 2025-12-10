@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/">
+    <title>Eventos Elegantes</title>
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+      <div class="container">
+        <a class="navbar-brand" href="#">Eventos Elegantes</a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            
+            <li class="nav-item">
+              <a class="nav-link active"
+                routerLink="inicio"
+                routerLinkActive="active">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                routerLink="manteleria"
+                routerLinkActive="active"
+                >Mantelería</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" routerLink="salones" routerLinkActive="active"  style="cursor: pointer;">Salones</a>
+            </li>
+
+            <li class="nav-item">
+              <a 
+                class="nav-link active"
+                routerLink="decoracion-crud"
+                routerLinkActive="active"
+              >Decoración</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" 
+              routerLink="musica" 
+              routerLinkActive="active"
+              >Música</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" 
+              routerLink="animacion" 
+              routerLinkActive="active">
+              Animación</a>
+            </li>
+
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <app-notification [notifications]="notifications"></app-notification>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <h1>Servicios para Eventos</h1>
+        <p>
+          Encuentra el servicio perfecto para hacer de tu evento una experiencia inolvidable.
+        </p>
+      </div>
+    </section>
+
+    <!-- CONTENIDO DE ANGULAR -->
+    <router-outlet></router-outlet>
+
+    <!-- FOOTER PROFESIONAL -->
+    <footer class="footer text-white">
+      <div class="container py-4">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <h5 class="footer-title">Eventia</h5>
+            <p class="small">
+              Tu aliado para crear eventos inolvidables, con decoración y servicios profesionales.
+            </p>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <h5 class="footer-title">Enlaces</h5>
+            <ul class="footer-links">
+              <li><a>Inicio</a></li>
+              <li><a>Servicios</a></li>
+              <li><a>Catálogo</a></li>
+              <li><a>Contacto</a></li>
+            </ul>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <h5 class="footer-title">Contáctanos</h5>
+            <p class="small mb-1">📍 Guayaquil, Ecuador</p>
+            <p class="small mb-1">📞 099 999 9999</p>
+            <p class="small">📧 info@eventia.com</p>
+          </div>
+        </div>
+
+        <div class="text-center small mt-3">
+          © {{year}} Eventia — Todos los derechos reservados.
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

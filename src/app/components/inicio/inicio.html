@@ -1,0 +1,95 @@
+<!-- CAROUSEL -->
+<div id="carouselFondo" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+  <div class="carousel-inner">
+
+    <div class="carousel-item active">
+      <div class="blur-bg" style="background-image: url('assets/ia.jpg')"></div>
+      <img src="assets/ia.jpg" class="carousel-center-img" alt="Imagen 1">
+    </div>
+
+    <div class="carousel-item">
+      <div class="blur-bg" style="background-image: url('assets/ia2.jpg')"></div>
+      <img src="assets/ia2.jpg" class="carousel-center-img" alt="Imagen 2">
+    </div>
+
+  </div>
+</div>
+
+<!-- SECCIÓN INFORMATIVA PRINCIPAL -->
+<section class="mt-5 text-center">
+  <h1 class="display-5 fw-bold mb-3">
+    Realiza tu evento con nosotros
+  </h1>
+  <p class="text-muted">
+    Observa información sobre nuestros servicios y opciones para tu evento. <br>
+    Esta sección es solo informativa, no clickeable.
+  </p>
+</section>
+
+<!-- GRID DE PRODUCTOS -->
+<section class="inicio-container mt-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let item of productos">
+                <app-card
+            [titulo]="item.titulo"
+            [descripcion]="item.descripcion"
+            [imagen]="item.imagen"
+            [mostrarBotones]="false"
+          ></app-card>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POR QUÉ ELEGIRNOS -->
+<section class="container porque-section mt-5">
+  <h2 class="text-center mb-4 section-title">¿Por qué elegirnos?</h2>
+  <div class="row text-center">
+    <div class="col-md-4 mb-4">
+      <div class="porque-box">
+        <i class="bi bi-stars icono"></i>
+        <h5>Experiencia Profesional</h5>
+        <p>Más de 10 años decorando eventos con resultados impecables.</p>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="porque-box">
+        <i class="bi bi-award icono"></i>
+        <h5>Calidad Garantizada</h5>
+        <p>Materiales premium y servicios de alto nivel para tu evento.</p>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="porque-box">
+        <i class="bi bi-people icono"></i>
+        <h5>Atención Personalizada</h5>
+        <p>Te acompañamos desde la idea hasta el montaje final.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN DE MARCAS / REDES SOCIALES -->
+<section class="mt-5 text-center">
+  <h1 class="display-5 fw-bold mb-3">
+    Empresas que hacen de su pasión una hermosa profesión
+  </h1>
+  <p class="fw-bold">
+    Síguelos en sus redes sociales para conocer más de su trabajo.
+  </p>
+</section>
+
+<section class="marca-container marca-grande mt-4">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4" *ngFor="let item of marcas">
+              <app-card 
+          [imagen]="item.imagen"
+          [url]="item.url"
+          [mostrarBotones]="false" >
+        </app-card>
+      </div>
+    </div>
+  </div>
+</section>

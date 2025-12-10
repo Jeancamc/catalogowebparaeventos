@@ -1,0 +1,113 @@
+/* =========================
+   CAROUSEL
+========================= */
+
+/* Contenedor principal */
+#carouselFondo {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  overflow: hidden;
+}
+
+/* Imagen central (nítida) */
+.carousel-center-img {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  width: auto;
+  height: 70vh;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+}
+
+/* Fondo lateral con efecto blur */
+.blur-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(25px) brightness(0.8);
+  transform: scale(1.2);
+  opacity: 0.97;
+  z-index: 1;
+}
+
+/* Cada item del carousel */
+.carousel-item {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+}
+
+
+/* =========================
+   CONTENEDOR DE INICIO
+========================= */
+
+.inicio-container {
+  padding-bottom: 40px;
+}
+
+/* Hace que todas las columnas tengan cards del mismo tamaño */
+.row > div {
+  display: flex;
+}
+
+/* Para que el componente <app-card> se estire igual que los demás */
+app-card {
+  flex: 1;
+  display: flex;
+}
+
+/* =========================
+   POR QUÉ ELEGIRNOS
+========================= */
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.section-subtitle {
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.porque-section .porque-box {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  height: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.porque-section .porque-box:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+.icono {
+  font-size: 2.5rem;
+  color: #7A57FF;
+  margin-bottom: 10px;
+}
+
+/* =========================
+   TARJETAS MARCAS (marca-grande)
+========================= */
+
+/* Solo afecta a las tarjetas dentro de 'marca-grande' */
+.marca-grande app-card {
+  align-content: center;
+  margin: 0 auto;          /* centra la tarjeta horizontalmente */
+  flex-direction: column;
+  cursor: default;         /* cursor normal, no clickeable */
+}
+
+/* Ajuste de columnas específicas dentro de marca-grande */
+
+
+

@@ -1,0 +1,267 @@
+<div class="container mt-4">
+
+  <!-- Notificaciones -->
+  <app-notification [notifications]="notifications"></app-notification>
+
+  <!-- HERO tipo música -->
+  <div class="hero-animacion mb-4">
+    <div class="hero-content">
+      <h1><i class="bi bi-stars"></i> Servicios de Animación</h1>
+      <p>Administra shows infantiles, hora loca, personajes temáticos y más para tus eventos.</p>
+    </div>
+  </div>
+
+  <!-- Búsqueda y botón -->
+  <div class="d-flex justify-content-between align-items-center my-3">
+    <input
+      type="text"
+      class="form-control w-50"
+      placeholder="Buscar servicio de animación..."
+      #searchInput
+      (input)="search(searchInput.value)" />
+    <button
+      *ngIf="!formVisible"
+      class="btn btn-success"
+      (click)="showForm()">
+      <i class="bi bi-plus-circle"></i> Nuevo Servicio
+    </button>
+  </div>
+
+  <!-- Formulario (oculto por defecto) -->
+  <div *ngIf="formVisible" class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">
+        {{ servicioSeleccionado ? 'Editar Servicio de Animación' : 'Nuevo Servicio de Animación' }}
+      </h5>
+
+      <form [formGroup]="formAnimacion" (ngSubmit)="save()">
+
+        <!-- Nombre -->
+        <div class="mb-3">
+          <label class="form-label">Nombre del Servicio *</label>
+          <input
+            type="text"
+            formControlName="nombre"
+            class="form-control"
+            placeholder="Ej: Show Infantil Premium" />
+          <span class="error"
+                *ngIf="formAnimacion.get('nombre')?.invalid &&
+                       (formAnimacion.get('nombre')?.dirty || formAnimacion.get('nombre')?.touched)">
+            <ng-container *ngIf="formAnimacion.get('nombre')?.errors?.['required']">
+              Este campo es requerido
+            </ng-container>
+            <ng-container *ngIf="formAnimacion.get('nombre')?.errors?.['minlength']">
+              Debe tener mínimo 3 caracteres
+            </ng-container>
+          </span>
+        </div>
+
+        <!-- Tipo -->
+        <div class="mb-3">
+          <label class="form-label">Tipo de Animación *</label>
+          <select
+            formControlName="tipo"
+            class="form-select">
+            <option value="">Seleccione un tipo</option>
+            <option *ngFor="let tipo of tiposAnimacion" [value]="tipo">{{ tipo }}</option>
+          </select>
+          <span class="error"
+                *ngIf="formAnimacion.get('tipo')?.invalid &&
+                       (formAnimacion.get('tipo')?.dirty || formAnimacion.get('tipo')?.touched)">
+            Debe seleccionar un tipo de animación
+          </span>
+        </div>
+
+        <!-- Duración y precio -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Duración (horas) *</label>
+            <input
+              type="number"
+              formControlName="duracionHoras"
+              class="form-control"
+              min="1"
+              placeholder="2" />
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Precio por Evento ($) *</label>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <input
+                type="number"
+                formControlName="precioPorEvento"
+                class="form-control"
+                min="1"
+                placeholder="200" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Público, nivel de energía -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Público objetivo *</label>
+            <select
+              formControlName="publicoObjetivo"
+              class="form-select">
+              <option value="">Seleccione un público</option>
+              <option *ngFor="let publico of publicosObjetivo" [value]="publico">
+                {{ publico }}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Nivel de energía *</label>
+            <select
+              formControlName="nivelEnergia"
+              class="form-select">
+              <option value="">Seleccione nivel</option>
+              <option *ngFor="let nivel of nivelesEnergia" [value]="nivel">
+                {{ nivel }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Checkboxes -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <div class="form-check">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="incluyePersonajes"
+                formControlName="incluyePersonajes" />
+              <label class="form-check-label" for="incluyePersonajes">
+                Incluye personajes / animadores
+              </label>
+            </div>
+          </div>
+
+          <div class="col-md-6 mt-2 mt-md-0">
+            <div class="form-check">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="disponible"
+                formControlName="disponible" />
+              <label class="form-check-label" for="disponible">
+                Disponible
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <div class="mb-3">
+          <label class="form-label">Descripción *</label>
+          <textarea
+            class="form-control"
+            formControlName="descripcion"
+            rows="3"
+            placeholder="Describe brevemente el tipo de animación, actividades y enfoque."></textarea>
+        </div>
+
+        <!-- Botones -->
+        <div class="mt-4 d-flex justify-content-start gap-2">
+          <button type="submit" class="btn btn-success">
+            {{ servicioSeleccionado ? 'Actualizar' : 'Guardar' }}
+          </button>
+          <button type="button" class="btn btn-outline-secondary" (click)="hideForm()">
+            Cancelar
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Tabla reutilizable -->
+  <section class="mb-4">
+    <h4 class="mb-3">Servicios Registrados</h4>
+    <app-simple-table
+      [data]="serviciosFiltrados"
+      [columns]="tableColumns"
+      [loading]="loading"
+      [pageSize]="5"
+      [showPagination]="true"
+      [showActions]="true"
+      (action)="onTableAction($event)">
+    </app-simple-table>
+
+    <div *ngIf="!loading && serviciosFiltrados.length === 0" class="text-center text-muted py-3">
+      No hay datos
+    </div>
+  </section>
+
+  <!-- Modal Ver Servicio -->
+  <div *ngIf="modalVerVisible" class="custom-modal-backdrop">
+    <div class="custom-modal">
+      <div class="custom-modal-header">
+        <h5>Detalle del Servicio de Animación</h5>
+        <button type="button" class="btn-close" (click)="cerrarModalVer()"></button>
+      </div>
+
+      <div class="custom-modal-body" *ngIf="servicioSeleccionadoParaVer">
+        <p><strong>Nombre:</strong> {{ servicioSeleccionadoParaVer?.nombre }}</p>
+        <p><strong>Tipo:</strong> {{ servicioSeleccionadoParaVer?.tipo }}</p>
+        <p><strong>Duración:</strong> {{ servicioSeleccionadoParaVer?.duracionHoras }} horas</p>
+        <p><strong>Precio por evento:</strong> {{ servicioSeleccionadoParaVer?.precioPorEvento }}</p>
+        <p><strong>Público objetivo:</strong> {{ servicioSeleccionadoParaVer?.publicoObjetivo }}</p>
+        <p><strong>Nivel de energía:</strong> {{ servicioSeleccionadoParaVer?.nivelEnergia }}</p>
+        <p><strong>Incluye personajes:</strong> {{ servicioSeleccionadoParaVer?.incluyePersonajes ? 'Sí' : 'No' }}</p>
+        <p><strong>Disponible:</strong> {{ servicioSeleccionadoParaVer?.disponible ? 'Sí' : 'No' }}</p>
+        <p><strong>Descripción:</strong> {{ servicioSeleccionadoParaVer?.descripcion }}</p>
+      </div>
+
+      <div class="custom-modal-footer">
+        <button class="btn btn-outline-secondary" type="button" (click)="cerrarModalVer()">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cards tipo "¿Por qué elegirnos?" -->
+  <section class="mb-4">
+    <h4 class="mb-3">Nuestras Animaciones</h4>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+
+      <!-- Card 1 -->
+      <div class="col">
+        <app-card
+          [titulo]="'Show Infantil'"
+          [descripcion]="'Shows llenos de juegos, magia y canciones para que los niños sean los protagonistas.'"
+          [imagen]="'assets/show-infantil.jpg'"
+          [mostrarBotones]="false">
+        </app-card>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="col">
+        <app-card
+          [titulo]="'Hora Loca'"
+          [descripcion]="'Energía al máximo con música, coreografías y accesorios que transforman la fiesta.'"
+          [imagen]="'assets/hora-loca.jpg'"
+          [mostrarBotones]="false">
+        </app-card>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="col">
+        <app-card
+          [titulo]="'Animación Corporativa'"
+          [descripcion]="'Dinámicas profesionales que mejoran el ambiente y fortalecen el trabajo en equipo.'"
+          [imagen]="'assets/animaciones-corporativas.jpg'"
+          [mostrarBotones]="false">
+        </app-card>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+

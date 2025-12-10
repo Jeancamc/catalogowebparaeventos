@@ -1,0 +1,483 @@
+
+<!-- POR QUÉ ELEGIRNOS -->
+<section class="container porque-section mt-5">
+  <h2 class="text-center mb-4 section-title">¿Por qué elegirnos?</h2>
+  <div class="row text-center">
+    <div class="col-md-4 mb-4">
+      <div class="porque-box">
+        <i class="bi bi-stars icono"></i>
+        <h5>Experiencia Profesional</h5>
+        <p>Más de 10 años decorando eventos con resultados impecables.</p>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="porque-box">
+        <i class="bi bi-award icono"></i>
+        <h5>Calidad Garantizada</h5>
+        <p>Materiales premium y servicios de alto nivel para tu evento.</p>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="porque-box">
+        <i class="bi bi-people icono"></i>
+        <h5>Atención Personalizada</h5>
+        <p>Te acompañamos desde la idea hasta el montaje final.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="manteleria-container">
+  <!-- Notificaciones -->
+  <app-notification [notifications]="notifications"></app-notification>
+
+  <!-- Header -->
+  <header class="page-header text-center mb-5">
+    <h1 class="display-4">Catálogo de Servicios de Mantelería</h1>
+    <p class="lead">Administra el catálogo de productos y servicios de mantelería para eventos</p>
+    <div class="badge bg-primary fs-6 p-2">
+      {{ servicios.length }} servicios registrados
+    </div>
+  </header>
+
+  <!-- Barra de búsqueda -->
+  <section class="search-section mb-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar servicios por nombre, descripción o color..."
+            [(ngModel)]="searchTerm"
+            (keyup.enter)="buscarServicios()"
+          />
+          <button class="btn btn-primary" type="button" (click)="buscarServicios()">
+            <i class="bi bi-search"></i> Buscar
+          </button>
+          <button class="btn btn-secondary" type="button" (click)="searchTerm = ''; cargarServicios()">
+            <i class="bi bi-x-circle"></i> Limpiar
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Formulario CRUD -->
+  <section class="form-section mb-5">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white">
+        <h2 class="mb-0">
+          <i class="bi bi-{{ modoEdicion ? 'pencil' : 'plus' }}-circle"></i>
+          {{ modoEdicion ? 'Editar Servicio' : 'Nuevo Servicio de Mantelería' }}
+        </h2>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="servicioForm" (ngSubmit)="modoEdicion ? actualizarServicio() : crearServicio()" novalidate>
+          
+          <!-- Fila 1: Nombre y Tipo -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="nombre" class="form-label">Nombre del Servicio *</label>
+              <input
+                type="text"
+                id="nombre"
+                formControlName="nombre"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': nombre?.invalid && nombre?.touched }"
+                placeholder="Ej: Mantel Blanco Premium"
+              />
+              <div class="invalid-feedback" *ngIf="nombre?.invalid && nombre?.touched">
+                <span *ngIf="nombre?.errors?.['required']">El nombre es requerido</span>
+                <span *ngIf="nombre?.errors?.['minlength']">Mínimo 3 caracteres</span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="tipo" class="form-label">Tipo de Mantel *</label>
+              <select
+                id="tipo"
+                formControlName="tipo"
+                class="form-select"
+                [ngClass]="{ 'is-invalid': tipo?.invalid && tipo?.touched }"
+              >
+                <option value="" disabled selected>Seleccione un tipo</option>
+                <option *ngFor="let tipo of tiposMantel" [value]="tipo">{{ tipo }}</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="tipo?.invalid && tipo?.touched">
+                Por favor seleccione un tipo
+              </div>
+            </div>
+          </div>
+
+          <!-- Fila 2: Material y Color -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="material" class="form-label">Material *</label>
+              <select
+                id="material"
+                formControlName="material"
+                class="form-select"
+                [ngClass]="{ 'is-invalid': material?.invalid && material?.touched }"
+              >
+                <option value="" disabled selected>Seleccione material</option>
+                <option *ngFor="let material of materiales" [value]="material">{{ material }}</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="material?.invalid && material?.touched">
+                Por favor seleccione un material
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="color" class="form-label">Color *</label>
+              <input
+                type="text"
+                id="color"
+                formControlName="color"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': color?.invalid && color?.touched }"
+                placeholder="Ej: Blanco, Negro, Rojo"
+              />
+              <div class="invalid-feedback" *ngIf="color?.invalid && color?.touched">
+                El color es requerido
+              </div>
+            </div>
+          </div>
+
+          <!-- Fila 3: Medidas y Categoría (RADIO BUTTONS) -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="medidas" class="form-label">Medidas *</label>
+              <input
+                type="text"
+                id="medidas"
+                formControlName="medidas"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': servicioForm.get('medidas')?.invalid && servicioForm.get('medidas')?.touched }"
+                placeholder="Ej: 180x300 cm, Ø 180 cm"
+              />
+              <div class="invalid-feedback" *ngIf="servicioForm.get('medidas')?.invalid && servicioForm.get('medidas')?.touched">
+                Las medidas son requeridas
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label d-block">Categoría del Evento *</label>
+              <div class="btn-group" role="group">
+                <label class="btn btn-outline-primary" *ngFor="let cat of categorias">
+                  <input
+                    type="radio"
+                    formControlName="categoria"
+                    [value]="cat"
+                    class="btn-check"
+                    name="categoria"
+                    autocomplete="off"
+                  >
+                  {{ cat }}
+                </label>
+              </div>
+              <div class="invalid-feedback d-block" *ngIf="categoria?.invalid && categoria?.touched">
+                Por favor seleccione una categoría
+              </div>
+            </div>
+          </div>
+
+          <!-- Fila 4: Precios -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="precioAlquiler" class="form-label">Precio Alquiler (USD) *</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input
+                  type="number"
+                  id="precioAlquiler"
+                  formControlName="precioAlquiler"
+                  class="form-control"
+                  [ngClass]="{ 'is-invalid': precioAlquiler?.invalid && precioAlquiler?.touched }"
+                  min="0"
+                  step="0.01"
+                />
+              </div>
+              <div class="invalid-feedback" *ngIf="precioAlquiler?.invalid && precioAlquiler?.touched">
+                <span *ngIf="precioAlquiler?.errors?.['required']">El precio es requerido</span>
+                <span *ngIf="precioAlquiler?.errors?.['min']">El precio debe ser mayor o igual a 0</span>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label for="precioVenta" class="form-label">Precio Venta (USD)</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input
+                  type="number"
+                  id="precioVenta"
+                  formControlName="precioVenta"
+                  class="form-control"
+                  min="0"
+                  step="0.01"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label for="stockDisponible" class="form-label">Stock Disponible *</label>
+              <input
+                type="number"
+                id="stockDisponible"
+                formControlName="stockDisponible"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': stockDisponible?.invalid && stockDisponible?.touched }"
+                min="0"
+              />
+              <div class="invalid-feedback" *ngIf="stockDisponible?.invalid && stockDisponible?.touched">
+                <span *ngIf="stockDisponible?.errors?.['required']">El stock es requerido</span>
+                <span *ngIf="stockDisponible?.errors?.['min']">El stock debe ser mayor o igual a 0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fila 5: Disponibilidad (CHECKBOX) y URL Imagen -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <div class="form-check form-switch mt-4">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="disponible"
+                  formControlName="disponible"
+                  role="switch"
+                >
+                <label class="form-check-label" for="disponible">
+                  ¿Disponible para alquiler?
+                </label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="imagenUrl" class="form-label">URL de Imagen (opcional)</label>
+              <input
+                type="text"
+                id="imagenUrl"
+                formControlName="imagenUrl"
+                class="form-control"
+                placeholder="https://ejemplo.com/imagen.jpg"
+              />
+            </div>
+          </div>
+
+          <!-- Descripción (TEXTAREA) -->
+          <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción del Servicio *</label>
+            <textarea
+              id="descripcion"
+              formControlName="descripcion"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': descripcion?.invalid && descripcion?.touched }"
+              rows="3"
+              placeholder="Describa el servicio de mantelería en detalle..."
+            ></textarea>
+            <div class="invalid-feedback" *ngIf="descripcion?.invalid && descripcion?.touched">
+              <span *ngIf="descripcion?.errors?.['required']">La descripción es requerida</span>
+              <span *ngIf="descripcion?.errors?.['minlength']">Mínimo 10 caracteres</span>
+            </div>
+          </div>
+
+          <!-- Botones de acción -->
+          <div class="form-actions mt-4">
+            <button
+              type="submit"
+              class="btn btn-success me-2"
+              [disabled]="!servicioForm.valid || loading"
+            >
+              <i class="bi bi-{{ modoEdicion ? 'check' : 'plus' }}-circle"></i>
+              {{ loading ? 'Procesando...' : (modoEdicion ? 'Actualizar' : 'Crear') }}
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-secondary me-2"
+              (click)="cancelarEdicion()"
+              *ngIf="modoEdicion"
+              [disabled]="loading"
+            >
+              <i class="bi bi-x-circle"></i> Cancelar
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              (click)="servicioForm.reset()"
+              [disabled]="loading"
+            >
+              <i class="bi bi-eraser"></i> Limpiar Formulario
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tabla de Servicios (Componente Reutilizable) -->
+  <section class="table-section">
+    <div class="card shadow">
+      <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+        <h2 class="mb-0">
+          <i class="bi bi-table"></i> Servicios de Mantelería Registrados
+        </h2>
+        <span class="badge bg-light text-dark fs-6">
+          {{ servicios.length }} {{ servicios.length === 1 ? 'servicio' : 'servicios' }}
+        </span>
+      </div>
+      <div class="card-body">
+        <app-simple-table
+          [data]="servicios"
+          [columns]="tableColumns"
+          [loading]="loading"
+          [pageSize]="5"
+          [showPagination]="true"
+          [showActions]="true"
+          (action)="onTableAction($event)"
+        >
+        </app-simple-table>
+
+        <!-- Mensaje si no hay datos -->
+        <div *ngIf="!loading && servicios.length === 0" class="text-center py-5">
+          <i class="bi bi-inbox" style="font-size: 3rem; color: #6c757d;"></i>
+          <h4 class="mt-3">No hay servicios registrados</h4>
+          <p class="text-muted">Comienza agregando un nuevo servicio de mantelería usando el formulario superior.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ========== MODAL DE VISUALIZACIÓN ========== -->
+<div *ngIf="modalVerVisible" class="custom-modal-backdrop">
+  <div class="custom-modal">
+    <div class="custom-modal-header">
+      <h5><i class="bi bi-eye-fill me-2"></i> Detalles del Servicio de Mantelería</h5>
+      <button type="button" class="btn-close" (click)="cerrarModalVer()"></button>
+    </div>
+
+    <div class="custom-modal-body" *ngIf="servicioSeleccionadoParaVer">
+      
+      <!-- Información principal -->
+      <div class="row">
+        <div class="col-md-6">
+          <p><strong><i class="bi bi-card-heading"></i> Nombre:</strong> {{ servicioSeleccionadoParaVer.nombre }}</p>
+          <p><strong><i class="bi bi-tag"></i> Tipo:</strong> {{ servicioSeleccionadoParaVer.tipo }}</p>
+          <p><strong><i class="bi bi-palette"></i> Color:</strong> 
+            <span class="badge" [ngStyle]="{'background-color': getColorCode(servicioSeleccionadoParaVer.color), color: getTextColor(servicioSeleccionadoParaVer.color)}">
+              {{ servicioSeleccionadoParaVer.color }}
+            </span>
+          </p>
+          <p><strong><i class="bi bi-rulers"></i> Medidas:</strong> {{ servicioSeleccionadoParaVer.medidas }}</p>
+        </div>
+        
+        <div class="col-md-6">
+          <p><strong><i class="bi bi-bag"></i> Material:</strong> {{ servicioSeleccionadoParaVer.material }}</p>
+          <p><strong><i class="bi bi-bookmark"></i> Categoría:</strong> 
+            <span class="badge bg-primary">{{ servicioSeleccionadoParaVer.categoria }}</span>
+          </p>
+          <p><strong><i class="bi bi-cash-stack"></i> Precio Alquiler:</strong> ${{ servicioSeleccionadoParaVer.precioAlquiler | number:'1.2-2' }}</p>
+          <p><strong><i class="bi bi-box"></i> Stock Disponible:</strong> {{ servicioSeleccionadoParaVer.stockDisponible }} unidades</p>
+        </div>
+      </div>
+
+      <!-- Precio de venta (si existe) -->
+      <div class="row mt-3" *ngIf="servicioSeleccionadoParaVer.precioVenta">
+        <div class="col-12">
+          <p><strong><i class="bi bi-cash"></i> Precio Venta:</strong> ${{ servicioSeleccionadoParaVer.precioVenta | number:'1.2-2' }}</p>
+        </div>
+      </div>
+
+      <!-- Estado y disponibilidad -->
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <p><strong><i class="bi bi-check-circle"></i> Disponible:</strong> 
+            <span [ngClass]="{'text-success': servicioSeleccionadoParaVer.disponible, 'text-danger': !servicioSeleccionadoParaVer.disponible}">
+              {{ servicioSeleccionadoParaVer.disponible ? 'Sí' : 'No' }}
+            </span>
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p><strong><i class="bi bi-calendar"></i> Fecha Registro:</strong> {{ servicioSeleccionadoParaVer.fechaRegistro | date:'dd/MM/yyyy' }}</p>
+        </div>
+      </div>
+
+      <!-- Descripción -->
+      <div class="mt-3">
+        <p><strong><i class="bi bi-card-text"></i> Descripción:</strong></p>
+        <div class="card bg-light">
+          <div class="card-body">
+            {{ servicioSeleccionadoParaVer.descripcion }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Imagen (si existe) -->
+      <div class="mt-3" *ngIf="servicioSeleccionadoParaVer.imagenUrl">
+        <p><strong><i class="bi bi-image"></i> Imagen:</strong></p>
+        <div class="text-center">
+          <img 
+            [src]="servicioSeleccionadoParaVer.imagenUrl" 
+            [alt]="servicioSeleccionadoParaVer.nombre" 
+            class="img-thumbnail modal-imagen"
+            onerror="this.src='assets/placeholder-mantel.jpg'"
+          />
+        </div>
+      </div>
+
+    </div>
+
+    <div class="custom-modal-footer">
+      <button 
+        class="btn btn-warning me-2" 
+        type="button" 
+        (click)="seleccionarServicio(servicioSeleccionadoParaVer!); cerrarModalVer()"
+        *ngIf="servicioSeleccionadoParaVer"
+      >
+        <i class="bi bi-pencil"></i> Editar
+      </button>
+      <button 
+        class="btn btn-danger me-2" 
+        type="button" 
+        (click)="eliminarServicio(servicioSeleccionadoParaVer!); cerrarModalVer()"
+        *ngIf="servicioSeleccionadoParaVer"
+      >
+        <i class="bi bi-trash"></i> Eliminar
+      </button>
+      <button class="btn btn-outline-secondary" type="button" (click)="cerrarModalVer()">
+        <i class="bi bi-x-circle"></i> Cerrar
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+<!-- SECCIÓN DE MARCAS / REDES SOCIALES -->
+<section class="mt-5 text-center">
+  <h1 class="display-5 fw-bold mb-3">
+    Empresas que hacen de su pasión una hermosa profesión
+  </h1>
+  <p class="fw-bold">
+    Síguelos en sus redes sociales para conocer más de su trabajo.
+  </p>
+</section>
+
+<section class="marca-container marca-grande mt-4">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4" *ngFor="let item of marcas">
+        
+        <app-card 
+          [titulo]="'A todo mantel'"
+          [imagen]="item.imagen"
+          [url]="'www.atodomantel.com'"
+          [mostrarBotones]="false" >
+        </app-card>
+        
+      </div>
+    </div>
+  </div>
+</section>

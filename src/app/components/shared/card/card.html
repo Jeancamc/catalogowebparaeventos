@@ -1,0 +1,26 @@
+<div class="card-container">
+  <div class="card" (click)="onClick()" style="cursor: pointer;">
+    <img
+      *ngIf="imagen && imagen !== '' ; else noImage"
+      [src]="imagen"
+      (error)="onImgError($event)"
+      [alt]="titulo || 'imagen-card'"
+      class="card-img"
+    />
+
+    <ng-template #noImage>
+      <img src="assets/default.jpg" alt="imagen por defecto" class="card-img" />
+    </ng-template>
+
+    <div class="card-body">
+      <h5 class="card-title">{{ titulo }}</h5>
+      <p class="card-text">{{ descripcion }}</p>
+
+      <!-- Botones solo si mostrarBotones es true -->
+      <div class="d-flex justify-content-between mt-3" *ngIf="mostrarBotones">
+        <button type="button" class="btn btn-warning btn-sm" (click)="edit.emit(); $event.stopPropagation()">Editar</button>
+        <button type="button" class="btn btn-danger btn-sm" (click)="delete.emit(); $event.stopPropagation()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>

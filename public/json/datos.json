@@ -1,0 +1,126 @@
+{
+  "manteleria": [
+    {
+      "id": "1",
+      "nombre": "Mantel Blanco Premium",
+      "descripcion": "Mantel de algodón egipcio para eventos de gala",
+      "tipo": "Rectangular",
+      "material": "Algodón",
+      "color": "Blanco",
+      "medidas": "180x300 cm",
+      "precioAlquiler": 89.99,
+      "precioVenta": 129.99,
+      "stockDisponible": 50,
+      "disponible": true,
+      "categoria": "Boda",
+      "imagenUrl": "assets/mantel-blanco.jpg",
+      "fechaRegistro": "2024-03-15"
+    },
+    {
+      "id": "2",
+      "nombre": "Mantel Negro Elegante",
+      "descripcion": "Perfecto para eventos corporativos",
+      "tipo": "Redondo",
+      "material": "Poliéster",
+      "color": "Negro",
+      "medidas": "Ø 180 cm",
+      "precioAlquiler": 75.5,
+      "precioVenta": 110,
+      "stockDisponible": 30,
+      "disponible": true,
+      "categoria": "Corporativo",
+      "imagenUrl": "assets/mantel-negro.jpg",
+      "fechaRegistro": "2024-03-10"
+    },
+    {
+      "id": "3",
+      "nombre": "Mantel Infantil Colorido",
+      "descripcion": "Diseños divertidos para fiestas infantiles",
+      "tipo": "Rectangular",
+      "material": "Algodón",
+      "color": "Multicolor",
+      "medidas": "150x250 cm",
+      "precioAlquiler": 45,
+      "precioVenta": 65,
+      "stockDisponible": 25,
+      "disponible": false,
+      "categoria": "Infantil",
+      "imagenUrl": "assets/mantel-infantil.jpg",
+      "fechaRegistro": "2024-03-05"
+    }
+  ],
+  "decoracion": [
+    {
+      "nombre": "DecorArt Floral",
+      "tipo": "Floral",
+      "precioPorEvento": 120.5,
+      "empresaProveedor": "dscsdcd",
+      "descripcion": "Arreglos florales ewc y centros de mesa.qwdqwd",
+      "disponible": true,
+      "imagen": "",
+      "id": "1"
+    },
+    {
+      "id": "2",
+      "nombre": "GlobosFest",
+      "tipo": "Globos",
+      "precioPorEvento": 80,
+      "empresaProveedor": "GlobosFest S.A.",
+      "descripcion": "Decoración con globos temáticos para todo tipo de eventos.",
+      "disponible": true
+    }
+  ],
+  "musica": [
+    {
+      "id": "1",
+      "nombre": "DJ ProSound",
+      "tipo": "DJ",
+      "precioPorHora": 150,
+      "generoMusical": "Electrónica, Reggaeton, Pop",
+      "equipoIncluido": "Tornamesas, Luces LED, Micrófono",
+      "disponible": true
+    },
+    {
+      "id": "2",
+      "nombre": "Banda Los Tropicales",
+      "tipo": "Banda en vivo",
+      "precioPorHora": 300,
+      "generoMusical": "Salsa, Cumbia, Merengue",
+      "equipoIncluido": "Instrumentos, Amplificación",
+      "disponible": true
+    },
+    {
+      "id": "3",
+      "nombre": "Mariachi Guadalajara",
+      "tipo": "Mariachi",
+      "precioPorHora": 200,
+      "generoMusical": "Rancheras, Corridos",
+      "equipoIncluido": "Trajes típicos, Instrumentos",
+      "disponible": false
+    }
+  ],
+  "salones": [
+    {
+      "id": "1",
+      "nombre": "Salón Fiesta Elegante",
+      "descripcion": "Amplio salón para eventos sociales y corporativos",
+      "capacidad": 200,
+      "precioHora": 500,
+      "ubicacion": "Centro",
+      "tipoEvento": "Boda",
+      "serviciosIncluidos": "Mobiliario, Sonido básico, Iluminación",
+      "disponible": "Sí"
+    },
+    {
+      "id": "2",
+      "nombre": "Terraza Panorámica",
+      "descripcion": "Terraza al aire libre con vista de la ciudad",
+      "capacidad": 150,
+      "precioHora": 400,
+      "ubicacion": "Norte",
+      "tipoEvento": "Fiesta",
+      "serviciosIncluidos": "Mobiliario, Decoración básica",
+      "disponible": "No"
+    }
+  ]
+}

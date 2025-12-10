@@ -1,0 +1,51 @@
+/* estilos globales de la prte principal*/
+ header a.navbar-brand {
+        font-weight: bold;
+        font-size: 1.4rem;
+      }
+      .hero {
+        padding: 80px 20px;
+        background: #f8f9fa;
+        text-align: center;
+      }
+      .hero h1 {
+        font-size: 2.3rem;
+        font-weight: bold;
+      }
+      .hero p {
+        font-size: 1.1rem;
+        color: #555;
+        max-width: 600px;
+        margin: 10px auto 30px;
+      }
+
+      /* ================= FOOTER ================= */
+.footer {
+  background: #1a1a1a;
+}
+
+.footer-title {
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.footer-links {
+  padding-left: 0;
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 6px;
+}
+
+.footer-links a {
+  color: #cccccc;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.footer-links a:hover {
+  color: white;
+  text-decoration: underline;
+}

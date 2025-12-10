@@ -1,0 +1,185 @@
+<div class="container mt-4">
+
+  <!-- Notificaciones -->
+  <app-notification [notifications]="notifications"></app-notification>
+
+  <!-- HERO DECORACIÓN -->
+  <div class="hero-decoracion mb-4">
+    <div class="hero-content">
+      <h1><i class="bi bi-brush"></i> Decoración Profesional para Eventos</h1>
+      <p>Transforma bodas, cumpleaños y eventos corporativos con ambientes únicos.</p>
+    </div>
+  </div>
+
+  <!-- Título y búsqueda -->
+  <div class="d-flex justify-content-between align-items-center my-3">
+    <input 
+      type="text" 
+      class="form-control w-50" 
+      placeholder="Buscar por nombre..." 
+      (input)="search($event.target.value)" />
+
+    <button *ngIf="!formVisible" class="btn btn-primary" (click)="showForm()">
+      Nueva Decoración
+    </button>
+  </div>
+
+  <!-- Formulario CRUD -->
+  <div *ngIf="formVisible" class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">{{ editingId ? 'Editar Decoración' : 'Nueva Decoración' }}</h5>
+
+      <form [formGroup]="formDecoracion" (ngSubmit)="save()">
+
+        <!-- Campo: Nombre -->
+        <div class="mb-3">
+          <label class="form-label">Nombre</label>
+          <input 
+            type="text" 
+            formControlName="nombre" 
+            class="form-control"
+            [ngClass]="{'is-invalid': formDecoracion.get('nombre')?.invalid && formDecoracion.get('nombre')?.touched}" />
+
+          <div class="invalid-feedback">Nombre mínimo 3 caracteres.</div>
+        </div>
+
+        <!-- Campo: Tipo -->
+        <div class="mb-3">
+          <label class="form-label">Tipo</label>
+          <input 
+            type="text" 
+            formControlName="tipo" 
+            class="form-control"
+            [ngClass]="{'is-invalid': formDecoracion.get('tipo')?.invalid && formDecoracion.get('tipo')?.touched}" />
+
+          <div class="invalid-feedback">Este campo es obligatorio.</div>
+        </div>
+
+        <!-- Campo: Precio -->
+        <div class="mb-3">
+          <label class="form-label">Precio</label>
+          <input 
+            type="number" 
+            formControlName="precioPorEvento" 
+            class="form-control"
+            [ngClass]="{'is-invalid': formDecoracion.get('precioPorEvento')?.invalid && formDecoracion.get('precioPorEvento')?.touched}" />
+
+          <div class="invalid-feedback">Debe ser mayor a 0.</div>
+        </div>
+
+        <!-- Campo: Proveedor -->
+        <div class="mb-3">
+          <label class="form-label">Proveedor</label>
+          <input 
+            type="text" 
+            formControlName="empresaProveedor" 
+            class="form-control"
+            [ngClass]="{'is-invalid': formDecoracion.get('empresaProveedor')?.invalid && formDecoracion.get('empresaProveedor')?.touched}" />
+
+          <div class="invalid-feedback">Este campo es obligatorio.</div>
+        </div>
+
+        <!-- Campo: Descripción -->
+        <div class="mb-3">
+          <label class="form-label">Descripción</label>
+          <textarea 
+            formControlName="descripcion" 
+            class="form-control"
+            [ngClass]="{'is-invalid': formDecoracion.get('descripcion')?.invalid && formDecoracion.get('descripcion')?.touched}">
+          </textarea>
+
+          <div class="invalid-feedback">Mínimo 5 caracteres.</div>
+        </div>
+
+        <!-- Disponible -->
+        <div class="form-check mb-3">
+          <input type="checkbox" formControlName="disponible" class="form-check-input" />
+          <label class="form-check-label">Disponible</label>
+        </div>
+
+        <!-- Botones -->
+        <div class="mt-4 d-flex justify-content-start gap-2">
+          <button type="submit" class="btn btn-success">
+            {{ editingId ? 'Actualizar' : 'Guardar' }}
+          </button>
+
+          <button type="button" class="btn btn-outline-secondary" (click)="hideForm()">
+            Cancelar
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-responsive mb-5">
+    <table class="table table-striped table-bordered">
+      <thead class="table-light">
+        <tr>
+          <th>Nombre</th>
+          <th>Tipo</th>
+          <th>Precio</th>
+          <th>Proveedor</th>
+          <th>Disponible</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let deco of decoraciones">
+          <td>{{ deco.nombre }}</td>
+          <td>{{ deco.tipo }}</td>
+          <td>${{ deco.precioPorEvento }}</td>
+          <td>{{ deco.empresaProveedor }}</td>
+          <td>{{ deco.disponible ? 'Sí' : 'No' }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm me-1" (click)="editDecoracion(deco)">Editar</button>
+            <button class="btn btn-danger btn-sm" (click)="delete(deco)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- CARDS TIPO “POR QUÉ ELEGIRNOS” -->
+  <section class="mb-4">
+    <h3 class="deco-section-title mb-3">¿Por qué elegir nuestra decoración?</h3>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+
+      <!-- Card 1: Bodas -->
+      <div class="col">
+        <app-card
+          [titulo]="'Decoración para Bodas'"
+          [descripcion]="'Ambientes elegantes con flores, iluminación cálida y detalles personalizados.'"
+          [imagen]="'assets/decoracion-boda.jpg'"
+          [mostrarBotones]="false">
+        </app-card>
+      </div>
+
+      <!-- Card 2: Cumpleaños -->
+      <div class="col">
+        <app-card
+          [titulo]="'Decoración para Cumpleaños'"
+          [descripcion]="'Temáticas infantiles, juveniles o para adultos con colores vibrantes.'"
+          [imagen]="'assets/decoracion-cumpleaños.webp'"
+          [mostrarBotones]="false">
+        </app-card>
+      </div>
+
+      <!-- Card 3: Corporativo -->
+      <div class="col">
+        <app-card
+          [titulo]="'Decoración Corporativa'"
+          [descripcion]="'Montajes profesionales con identidad empresarial y estilo moderno.'"
+          [imagen]="'assets/decoracion-corporativa.webp'"
+          [mostrarBotones]="false">
+        </app-card>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+

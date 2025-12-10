@@ -1,0 +1,245 @@
+<div class="container mt-4">
+
+  <!-- Notificaciones -->
+  <app-notification [notifications]="notifications"></app-notification>
+
+  <!-- Hero con diseño -->
+  <div class="hero-musica mb-4">
+    <div class="hero-content">
+      <h1><i class="bi bi-music-note-beamed"></i> Servicios Musicales</h1>
+      <p>Administra DJ's, bandas, mariachis y más para tus eventos</p>
+    </div>
+  </div>
+
+  <!-- Búsqueda y botón -->
+  <div class="d-flex justify-content-between align-items-center my-3">
+    <input 
+      type="text" 
+      class="form-control w-50" 
+      placeholder="Buscar servicio musical..." 
+      #searchInput
+      (input)="search(searchInput.value)" />
+    <button 
+      *ngIf="!formVisible" 
+      class="btn btn-success" 
+      (click)="showForm()">
+      <i class="bi bi-plus-circle"></i> Nuevo Servicio
+    </button>
+  </div>
+
+  <!-- Formulario (oculto por defecto) -->
+  <div *ngIf="formVisible" class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">
+        {{ servicioSeleccionado ? 'Editar Servicio Musical' : 'Nuevo Servicio Musical' }}
+      </h5>
+      <form [formGroup]="formMusica" (ngSubmit)="save()">
+
+        <!-- Nombre -->
+        <div class="mb-3">
+          <label class="form-label">Nombre del Servicio *</label>
+          <input 
+            type="text" 
+            formControlName="nombre" 
+            class="form-control"
+            placeholder="Ej: DJ ProSound" />
+          <span class="error">
+            @if(formMusica.get('nombre')?.invalid && 
+                (formMusica.get('nombre')?.dirty || formMusica.get('nombre')?.touched)){
+              @if(formMusica.get('nombre')?.errors?.['required']){
+                Este campo es requerido
+              }
+              @if(formMusica.get('nombre')?.errors?.['minlength']){
+                Debe tener mínimo 3 caracteres
+              }
+              @if(formMusica.get('nombre')?.errors?.['maxlength']){
+                Debe tener máximo 50 caracteres
+              }
+            }
+          </span>
+        </div>
+
+        <!-- Tipo -->
+        <div class="mb-3">
+          <label class="form-label">Tipo de Servicio *</label>
+          <select 
+            formControlName="tipo" 
+            class="form-select">
+            <option value="">Seleccione un tipo</option>
+            <option *ngFor="let tipo of tiposMusica" [value]="tipo">{{ tipo }}</option>
+          </select>
+          <span class="error">
+            @if(formMusica.get('tipo')?.invalid && 
+                (formMusica.get('tipo')?.dirty || formMusica.get('tipo')?.touched)){
+              @if(formMusica.get('tipo')?.errors?.['required']){
+                Debe seleccionar un tipo de servicio
+              }
+            }
+          </span>
+        </div>
+
+        <!-- Precio por Hora -->
+        <div class="mb-3">
+          <label class="form-label">Precio por Hora ($) *</label>
+          <input 
+            type="number" 
+            formControlName="precioPorHora" 
+            class="form-control"
+            placeholder="150"
+            min="1"
+            [ngClass]="{'is-invalid': formMusica.get('precioPorHora')?.invalid && (formMusica.get('precioPorHora')?.dirty || formMusica.get('precioPorHora')?.touched)}" />
+          <span class="error">
+            @if(formMusica.get('precioPorHora')?.invalid && 
+                (formMusica.get('precioPorHora')?.dirty || formMusica.get('precioPorHora')?.touched)){
+              @if(formMusica.get('precioPorHora')?.errors?.['required']){
+                Este campo es requerido
+              }
+              @if(formMusica.get('precioPorHora')?.errors?.['min']){
+                El precio debe ser mayor a 0
+              }
+            }
+          </span>
+        </div>
+
+        <!-- Género Musical -->
+        <div class="mb-3">
+          <label class="form-label">Género Musical *</label>
+          <input 
+            type="text" 
+            formControlName="generoMusical" 
+            class="form-control"
+            placeholder="Ej: Electrónica, Reggaeton, Pop" />
+          <span class="error">
+            @if(formMusica.get('generoMusical')?.invalid && 
+                (formMusica.get('generoMusical')?.dirty || formMusica.get('generoMusical')?.touched)){
+              @if(formMusica.get('generoMusical')?.errors?.['required']){
+                Este campo es obligatorio
+              }
+            }
+          </span>
+        </div>
+
+        <!-- Equipo Incluido -->
+        <div class="mb-3">
+          <label class="form-label">Equipo Incluido *</label>
+          <input 
+            type="text" 
+            formControlName="equipoIncluido" 
+            class="form-control"
+            placeholder="Ej: Tornamesas, Luces LED, Micrófono" />
+          <span class="error">
+            @if(formMusica.get('equipoIncluido')?.invalid && 
+                (formMusica.get('equipoIncluido')?.dirty || formMusica.get('equipoIncluido')?.touched)){
+              @if(formMusica.get('equipoIncluido')?.errors?.['required']){
+                Este campo es obligatorio
+              }
+            }
+          </span>
+        </div>
+
+        <!-- Disponible (Checkbox) -->
+        <div class="form-check mb-3">
+          <input 
+            type="checkbox" 
+            formControlName="disponible" 
+            class="form-check-input" 
+            id="checkDisponible" />
+          <label class="form-check-label" for="checkDisponible">
+            Disponible
+          </label>
+        </div>
+
+        <!-- Botones -->
+        <div class="mt-4 d-flex justify-content-start gap-2">
+          <button type="submit" class="btn btn-success">
+            {{ servicioSeleccionado ? 'Actualizar' : 'Guardar' }}
+          </button>
+          <button type="button" class="btn btn-outline-secondary" (click)="hideForm()">
+            Cancelar
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Tabla reutilizable -->
+  <section class="mb-4">
+    <h4 class="mb-3">Servicios Registrados</h4>
+    <app-simple-table
+      [data]="serviciosFiltrados"
+      [columns]="tableColumns"
+      [loading]="loading"
+      [pageSize]="5"
+      [showPagination]="true"
+      [showActions]="true"
+      (action)="onTableAction($event)">
+    </app-simple-table>
+  </section>
+
+<!-- Modal Ver Servicio -->
+<div *ngIf="modalVerVisible" class="custom-modal-backdrop">
+  <div class="custom-modal">
+    <div class="custom-modal-header">
+      <h5>Detalle del Servicio Musical</h5>
+      <button type="button" class="btn-close" (click)="modalVerVisible = false"></button>
+    </div>
+
+    <div class="custom-modal-body" *ngIf="servicioSeleccionadoParaVer">
+      <p><strong>Nombre:</strong> {{ servicioSeleccionadoParaVer?.nombre }}</p>
+      <p><strong>Tipo:</strong> {{ servicioSeleccionadoParaVer?.tipo }}</p>
+      <p><strong>Precio por hora:</strong> {{ servicioSeleccionadoParaVer?.precioPorHora }}</p>
+      <p><strong>Género musical:</strong> {{ servicioSeleccionadoParaVer?.generoMusical }}</p>
+      <p><strong>Equipo incluido:</strong> {{ servicioSeleccionadoParaVer?.equipoIncluido }}</p>
+      <p><strong>Disponible:</strong> {{ servicioSeleccionadoParaVer?.disponible ? 'Sí' : 'No' }}</p>
+    </div>
+
+    <div class="custom-modal-footer">
+      <button class="btn btn-outline-secondary" type="button" (click)="modalVerVisible = false">
+        Cerrar
+      </button>
+    </div>
+  </div>
+  </div>
+
+
+
+
+  <!-- Cards reutilizables -->
+  <!-- Cards informativos/motivacionales -->
+  <section class="mb-4">
+  <h4 class="mb-3">¿Por qué elegirnos?</h4>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    
+    <!-- Card 1 -->
+    <div class="col">
+      <app-card 
+        [titulo]="'🎵 Música que Enamora'"
+        [descripcion]="'Crea el ambiente perfecto para tu evento con los mejores artistas y DJ profesionales.'"
+        [imagen]="'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500'"
+        [mostrarBotones]="false">
+      </app-card>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="col">
+      <app-card 
+        [titulo]="'🎤 Ambiente que se Siente'"
+        [descripcion]="'Desde bodas elegantes hasta fiestas inolvidables, tenemos el sonido ideal para ti.'"
+        [imagen]="'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=500'"
+        [mostrarBotones]="false">
+      </app-card>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="col">
+      <app-card 
+        [titulo]="'🎸 Experiencia Garantizada'"
+        [descripcion]="'Más de 50 eventos realizados con éxito. Profesionalismo y calidad en cada presentación.'"
+        [imagen]="'https://images.unsplash.com/photo-1501612780327-45045538702b?w=500'"
+        [mostrarBotones]="false">
+      </app-card>
+    </div>
+
+  </div>
+</section>

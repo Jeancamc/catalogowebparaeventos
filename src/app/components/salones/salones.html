@@ -1,0 +1,157 @@
+<div class="container my-4">
+
+  <!-- Notificaciones -->
+  <app-notification [notifications]="notifications"></app-notification>
+
+  <!-- ===================== -->
+  <!-- HERO SALONES -->
+  <!-- ===================== -->
+  <section class="hero-salones mb-4">
+    <div class="hero-content">
+      <h1><i class="bi bi-building"></i> Salones para Todo Tipo de Evento</h1>
+      <p>Encuentra el espacio ideal para bodas, conferencias, celebraciones o eventos corporativos.</p>
+    </div>
+  </section>
+
+  <!-- Estadísticas -->
+  <div class="estadisticas mb-4">
+    <div class="stat-card">
+      <span class="stat-number">{{ getEstadisticas().total }}</span>
+      <span class="stat-label">Salones Totales</span>
+    </div>
+
+    <div class="stat-card">
+      <span class="stat-number">{{ getEstadisticas().disponibles }}</span>
+      <span class="stat-label">Disponibles</span>
+    </div>
+
+    <div class="stat-card">
+      <span class="stat-number">{{ getEstadisticas().capacidadTotal }}</span>
+      <span class="stat-label">Capacidad Total</span>
+    </div>
+  </div>
+
+  <!-- ===================== -->
+  <!-- FORMULARIO CRUD -->
+  <!-- ===================== -->
+  <form
+    [formGroup]="salonForm"
+    (ngSubmit)="modoEdicion ? actualizarSalon() : crearSalon()"
+    class="card p-3 mb-4"
+  >
+    <h5 class="card-title">
+      {{ modoEdicion ? 'Editar salón' : 'Nuevo salón' }}
+    </h5>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label>Nombre</label>
+        <input type="text" class="form-control" formControlName="nombre" />
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label>Descripción</label>
+        <input type="text" class="form-control" formControlName="descripcion" />
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label>Capacidad</label>
+        <input type="number" class="form-control" formControlName="capacidad" />
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label>Precio por hora</label>
+        <input type="number" class="form-control" formControlName="precioHora" />
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label>Ubicación</label>
+        <select class="form-select" formControlName="ubicacion">
+          <option value="">Seleccione...</option>
+          <option *ngFor="let u of ubicaciones" [value]="u">{{ u }}</option>
+        </select>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label>Tipo de evento</label>
+        <select class="form-select" formControlName="tipoEvento">
+          <option value="">Seleccione...</option>
+          <option *ngFor="let t of tiposEvento" [value]="t">{{ t }}</option>
+        </select>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label>Servicios incluidos</label>
+        <input type="text" class="form-control" formControlName="serviciosIncluidos" />
+      </div>
+
+      <div class="col-md-3 mb-3 form-check mt-2">
+        <input type="checkbox" class="form-check-input" formControlName="disponible" id="chkDisp" />
+        <label for="chkDisp" class="form-check-label">Disponible</label>
+      </div>
+    </div>
+
+    <div class="mt-3">
+      <button class="btn btn-primary me-2" type="submit">
+        {{ modoEdicion ? 'Actualizar' : 'Crear' }}
+      </button>
+
+      <button class="btn btn-secondary" type="button" (click)="cancelarEdicion()" *ngIf="modoEdicion">
+        Cancelar
+      </button>
+    </div>
+  </form>
+
+  <!-- ===================== -->
+  <!-- TABLA -->
+  <!-- ===================== -->
+  <app-simple-table
+    [data]="salones"
+    [columns]="tableColumns"
+    (action)="onTableAction($event)">
+  </app-simple-table>
+
+  <!-- ===================== -->
+  <!-- SECCIÓN CARDS TEMÁTICAS -->
+  <!-- ===================== -->
+
+  <section class="mt-5">
+    <h3 class="section-title mb-3">Salones según tu evento</h3>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+
+      <!-- Card 1: Bodas -->
+      <div class="col">
+        <app-card
+          [titulo]="'Salón para Bodas'"
+          [descripcion]="'Espacios románticos con decoración elegante, iluminación cálida y capacidad para grandes celebraciones.'"
+          [imagen]="'assets/salon-boda.jpg'"
+          [mostrarBotones]="false">
+        </app-card>
+      </div>
+
+      <!-- Card 2: Eventos Corporativos -->
+      <div class="col">
+        <app-card
+          [titulo]="'Salón Corporativo'"
+          [descripcion]="'Ambientes modernos para conferencias, capacitaciones o reuniones empresariales.'"
+          [imagen]="'assets/salon-corporativo.jpg'"
+          [mostrarBotones]="false">
+        </app-card>
+      </div>
+
+      <!-- Card 3: Fiestas -->
+      <div class="col">
+        <app-card
+          [titulo]="'Salón para Fiestas y Celebraciones'"
+          [descripcion]="'El espacio ideal para cumpleaños, aniversarios y eventos sociales con música y ambientación especial.'"
+          [imagen]="'assets/salon-fiestas.jpeg'"
+          [mostrarBotones]="false">
+        </app-card>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+

@@ -1,0 +1,178 @@
+/* Contenedor principal */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Título */
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Formulario */
+.card-body {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #0c8dc0;
+}
+
+/* Inputs */
+.form-control {
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  border-color: #0c8dc0;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+/* Checkbox */
+.form-check-label {
+  font-size: 0.95rem;
+  margin-left: 5px;
+}
+
+/* Botones */
+.btn {
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background-color: #0c8dc0;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #0c8dc0;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: #1e7e34;
+}
+
+.btn-outline-secondary {
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+/* Mensaje feedback */
+.alert-info {
+  margin-bottom: 20px;
+  border-radius: 6px;
+}
+
+/* Cards */
+.card-container {
+  margin-bottom: 20px;
+}
+
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.card-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Botón dentro de card */
+.card button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* Tabla */
+.table {
+  margin-top: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f2f2f2;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .row-cols-md-3 {
+    row-gap: 20px;
+  }
+}
+  /* === HERO === */
+.hero-decoracion {
+  background: linear-gradient(135deg, #0c8dc0 0%, #0c8dc0 100%);
+  border-radius: 15px;
+  padding: 50px 30px;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.hero-decoracion h1 {
+  font-size: 2.3rem;
+  font-weight: 700;
+}
+
+.hero-decoracion p {
+  font-size: 1.1rem;
+  margin-top: 5px;
+}
+
+/* Sección Cards “Por qué elegirnos” */
+.deco-section-title {
+  color: #0c8dc0;
+  font-weight: 700;
+  border-bottom: 2px solid #0c8dc0;
+  padding-bottom: 8px;
+}
