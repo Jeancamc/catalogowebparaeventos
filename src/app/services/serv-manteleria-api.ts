@@ -5,35 +5,20 @@ import { ServicioManteleria } from '../models/manteleriamodel';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'any'
 })
-export class ManteleriaService {
+export class ServManteleriaService {
   private jsonUrl =  "http://localhost:3000/manteleria";
   private servicios: ServicioManteleria[] = [];
 
   constructor(private http: HttpClient) {
-    this.cargarDatosIniciales();
-  }
-
-  // Cargar datos iniciales desde JSON
-  private cargarDatosIniciales(): void {
-    this.http.get<ServicioManteleria[]>(this.jsonUrl).subscribe(
-      data => {
-        this.servicios = data.map(item => ({
-          ...item,
-          fechaRegistro: new Date(item.fechaRegistro)
-        }));
-      },
-      error => {
-        console.error('Error cargando datos:', error);
-        this.servicios = [];
-      }
-    );
+    //this.cargarDatosIniciales();
   }
 
   // Obtener todos los servicios
   getServicios(): Observable<ServicioManteleria[]> {
-    return of([...this.servicios]);
+    return this.http.get<ServicioManteleria[]>(this.jsonUrl)
+    
   }
 
   // Obtener servicio por ID

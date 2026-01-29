@@ -1,14 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
+import { EventoService } from './serv-eventos-json';
 
-import { ServDecoracionApi } from './serv-decoracion-api';
-
-describe('ServDecoracionJson', () => {
-  let service: ServDecoracionApi;
+describe('ServEventosJson', () => {
+  let service: EventoService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ServDecoracionApi);
+    service = TestBed.inject(EventoService);
   });
 
   it('should be created', () => {

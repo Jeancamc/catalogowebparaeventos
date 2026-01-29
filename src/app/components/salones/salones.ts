@@ -9,9 +9,9 @@ import {
 } from '@angular/forms';
 import { SimpleTableComponent } from '../shared/data-table/data-table';
 import { NotificationComponent, Notification } from '../shared/notification/notification';
-import { ServSalonesJson } from '../../services/serv-salones-json';
 import { Salon } from '../../models/salon';
 import { Card } from "../shared/card/card";
+import { ServSalonesApi } from '../../services/serv-salones-api';
 
 @Component({
   selector: 'app-salones',
@@ -29,7 +29,7 @@ import { Card } from "../shared/card/card";
 })
 export class SalonesComponent implements OnInit {
   private fb = inject(FormBuilder);
-  private salonesService = inject(ServSalonesJson);;
+  private salonesService = inject(ServSalonesApi);;
 
   // Variables del componente
   salones: Salon[] = [];

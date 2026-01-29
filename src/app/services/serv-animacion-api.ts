@@ -6,10 +6,10 @@ import { Animacion } from '../models/animacion';
 @Injectable({
   providedIn: 'root'
 })
-export class ServAnimacionJson {
+export class ServAnimacionApi {
 
   // IMPORTANTE: en tu db.json (del json-server) debe existir "animacion": []
-  private jsonUrl = 'http://localhost:3000/animacion';
+  private jsonUrl = 'http://localhost:5223/api/Animacions';
 
   constructor(private http: HttpClient) {}
 

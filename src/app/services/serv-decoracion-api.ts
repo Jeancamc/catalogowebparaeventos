@@ -6,8 +6,8 @@ import { Decoracion } from '../models/deco';
 @Injectable({
   providedIn: 'any',
 })
-export class ServDecoracionJson{
-  private decoracionUrl = "http://localhost:3000/decoracion";
+export class ServDecoracionApi{
+  private decoracionUrl = "http://localhost:5223/api/Decoracions";
   
   
   constructor (private httpclient:HttpClient){

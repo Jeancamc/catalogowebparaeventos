@@ -6,9 +6,9 @@ import { Salon } from '../models/salon';
 @Injectable({
   providedIn: 'root'
 })
-export class ServSalonesJson {
+export class ServSalonesApi {
   // Asegúrate de que en db.json tengas "salones": [ ... ]
-  private jsonUrl = 'http://localhost:3000/salones';
+  private jsonUrl = 'http://localhost:5223/api/Salons';
 
   constructor(private http: HttpClient) {}
 

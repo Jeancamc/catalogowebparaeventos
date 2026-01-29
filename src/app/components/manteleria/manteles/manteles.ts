@@ -10,8 +10,8 @@ import { NotificationComponent, Notification } from '../../shared/notification/n
 
 // Modelos y servicios
 import { ServicioManteleria, TIPOS_MANTEL, MATERIALES, CATEGORIAS } from '../../../models/manteleriamodel';
-import { ManteleriaService } from '../../../services/serv-manteleria-json';
 import { Card } from "../../shared/card/card";
+import { ServManteleriaService } from '../../../services/serv-manteleria-api';
 
 @Component({
   selector: 'app-manteleria',
@@ -29,7 +29,7 @@ import { Card } from "../../shared/card/card";
   styleUrls: ['./manteles.css']
 })
 export class ManteleriaComponent implements OnInit, OnDestroy {
-  private manteleriaService = inject(ManteleriaService);
+  private manteleriaService = inject(ServManteleriaService);
   private fb = inject(FormBuilder);
   private subscription: Subscription = new Subscription();
 

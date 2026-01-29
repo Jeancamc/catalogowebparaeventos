@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
-import { ServDecoracionJson } from '../../services/serv-decoracion-json';
 import { Decoracion } from '../../models/deco';
 import { Card } from '../shared/card/card';
 import { NotificationComponent, Notification } from '../shared/notification/notification';
+import { ServDecoracionApi } from '../../services/serv-decoracion-api';
 
 @Component({
   selector: 'app-decoracion-crud',
@@ -24,7 +23,7 @@ export class DecoracionCrud implements OnInit {
   vistaCards: boolean = true;
   mensaje: string = '';
 
-  constructor(private servDecoracion: ServDecoracionJson, private fb: FormBuilder) {
+  constructor(private servDecoracion: ServDecoracionApi, private fb: FormBuilder) {
     this.formDecoracion = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
       tipo: ['', Validators.required],

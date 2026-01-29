@@ -6,8 +6,8 @@ import { Musica } from '../models/musica';
 @Injectable({
   providedIn: 'root'
 })
-export class ServMusicaJson {
-  private jsonUrl = 'http://localhost:3000/musica';
+export class ServMusicaApi {
+  private jsonUrl = 'http://localhost:5223/api/Musicas';
 
   constructor(private http: HttpClient) {}
 

@@ -4,8 +4,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { SimpleTableComponent } from '../shared/data-table/data-table';
 import { NotificationComponent, Notification } from '../shared/notification/notification';
 import { Card } from '../shared/card/card';
-import { ServMusicaJson } from '../../services/serv-musica-json';
+
 import { Musica } from '../../models/musica';
+import { ServMusicaApi } from '../../services/serv-musica-api';
 
 @Component({
   selector: 'app-musica',
@@ -15,7 +16,7 @@ import { Musica } from '../../models/musica';
   styleUrls: ['./musica.css']
 })
 export class MusicaComponent implements OnInit {
-  private musicaService = inject(ServMusicaJson);
+  private musicaService = inject(ServMusicaApi);
   private fb = inject(FormBuilder);
 
   // Variables del componente

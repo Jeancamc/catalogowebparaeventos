@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ServManteleriaJson } from './serv-manteleria-json';
+import { ServManteleriaService } from './serv-manteleria-api';
 
-describe('ServManteleriaJson', () => {
-  let service: ServManteleriaJson;
+describe('ServManteleriaApi', () => {
+  let service: ServManteleriaService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ServManteleriaJson);
+    service = TestBed.inject(ServManteleriaService);
   });
 
   it('should be created', () => {

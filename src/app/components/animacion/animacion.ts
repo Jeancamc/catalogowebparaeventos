@@ -4,8 +4,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { SimpleTableComponent } from '../shared/data-table/data-table';
 import { NotificationComponent, Notification } from '../shared/notification/notification';
 import { Card } from '../shared/card/card';
-import { ServAnimacionJson } from '../../services/serv-animacion-json';
 import { Animacion } from '../../models/animacion';
+import { ServAnimacionApi } from '../../services/serv-animacion-api';
 
 @Component({
   selector: 'app-animacion',
@@ -23,7 +23,7 @@ import { Animacion } from '../../models/animacion';
 export class AnimacionComponent implements OnInit {
 
   // Servicios y utilidades
-  private animacionService = inject(ServAnimacionJson);
+  private animacionService = inject(ServAnimacionApi);
   private fb = inject(FormBuilder);
 
   // Datos
