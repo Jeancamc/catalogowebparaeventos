@@ -6,37 +6,36 @@ import { Decoracion } from '../models/deco';
 @Injectable({
   providedIn: 'any',
 })
-export class ServDecoracionApi{
-  private decoracionUrl = "http://localhost:5223/api/Decoracions";
-  
-  
-  constructor (private httpclient:HttpClient){
-  }
+export class ServDecoracionApi {
+  private decoracionUrl = 'http://localhost:5223/api/Decoraciones';
+
+  constructor(private httpclient: HttpClient) {}
 
   //Obtener las decoraciones
-  getDecoracion(): Observable<Decoracion[]>{
+  getDecoracion(): Observable<Decoracion[]> {
     return this.httpclient.get<Decoracion[]>(this.decoracionUrl);
   }
 
- delete(id:number): Observable<void> {
-  return this.httpclient.delete<void>(`${this.decoracionUrl}/${id}`);
-}
-
-
-  searchDecoracion(param:string) : Observable<Decoracion[]>{
-    return this.httpclient.get<Decoracion[]>(this.decoracionUrl)
-    .pipe(map(decoraciones=>decoraciones.filter(d=>d.nombre.toLowerCase().includes(param.toLowerCase()))))
+  delete(id: number): Observable<void> {
+    return this.httpclient.delete<void>(`${this.decoracionUrl}/${id}`);
   }
 
-  update(decoracion:Decoracion):Observable<Decoracion>{
+  searchDecoracion(param: string): Observable<Decoracion[]> {
+    return this.httpclient
+      .get<Decoracion[]>(this.decoracionUrl)
+      .pipe(
+        map((decoraciones) =>
+          decoraciones.filter((d) => d.nombre.toLowerCase().includes(param.toLowerCase())),
+        ),
+      );
+  }
+
+  update(decoracion: Decoracion): Observable<Decoracion> {
     let urlDecoracionEditar = `${this.decoracionUrl}/${decoracion.id}`;
     return this.httpclient.put<Decoracion>(urlDecoracionEditar, decoracion);
   }
 
-  create(decoracion:Decoracion):Observable<Decoracion>{
-    return this.httpclient.post<Decoracion>(this.decoracionUrl,decoracion);
+  create(decoracion: Decoracion): Observable<Decoracion> {
+    return this.httpclient.post<Decoracion>(this.decoracionUrl, decoracion);
   }
-
-
-
 }

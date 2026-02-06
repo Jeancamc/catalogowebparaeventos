@@ -1,6 +1,12 @@
 import { Component, OnInit, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 
@@ -9,9 +15,9 @@ import { SimpleTableComponent } from '../../shared/data-table/data-table';
 import { NotificationComponent, Notification } from '../../shared/notification/notification';
 
 // Modelos y servicios
-import { ServicioManteleria, TIPOS_MANTEL, MATERIALES, CATEGORIAS } from '../../../models/manteleriamodel';
-import { Card } from "../../shared/card/card";
-import { ServManteleriaService } from '../../../services/serv-manteleria-api';
+import { Manteles, TIPOS_MANTEL, MATERIALES, CATEGORIAS } from '../../../models/manteleriamodel';
+import { Card } from '../../shared/card/card';
+import { ServManteleria } from '../../../services/serv-manteleria-api';
 
 @Component({
   selector: 'app-manteleria',
@@ -23,37 +29,37 @@ import { ServManteleriaService } from '../../../services/serv-manteleria-api';
     HttpClientModule,
     SimpleTableComponent,
     NotificationComponent,
-    Card
-],
+    Card,
+  ],
   templateUrl: './manteles.html',
-  styleUrls: ['./manteles.css']
+  styleUrls: ['./manteles.css'],
 })
 export class ManteleriaComponent implements OnInit, OnDestroy {
-  private manteleriaService = inject(ServManteleriaService);
+  private manteleriaService = inject(ServManteleria);
   private fb = inject(FormBuilder);
   private subscription: Subscription = new Subscription();
 
   // Variables del componente
-  servicios: ServicioManteleria[] = [];
-  servicioSeleccionado: ServicioManteleria | null = null;
+  servicios: Manteles[] = [];
+  servicioSeleccionado: Manteles | null = null;
   modoEdicion: boolean = false;
   loading: boolean = false;
   notifications: Notification[] = [];
   searchTerm: string = '';
   marcas = [
-  { 
-    imagen: 'assets/marca1.jpg', 
-    url: 'https://www.facebook.com/tienda.de.arte.dc/' 
-  },
-  {
-    imagen: 'assets/marca2.jpg',
-    url: 'https://www.facebook.com/p/Dekorfactory-100077738053069/',
-  },
-  {
-    imagen: 'assets/marca3.jpg',
-    url: 'https://www.facebook.com/decoracioneseventosmm/?locale=es_LA',
-  },
-];
+    {
+      imagen: 'assets/marca1.jpg',
+      url: 'https://www.facebook.com/tienda.de.arte.dc/',
+    },
+    {
+      imagen: 'assets/marca2.jpg',
+      url: 'https://www.facebook.com/p/Dekorfactory-100077738053069/',
+    },
+    {
+      imagen: 'assets/marca3.jpg',
+      url: 'https://www.facebook.com/decoracioneseventosmm/?locale=es_LA',
+    },
+  ];
 
   // Opciones para formularios
   tiposMantel = TIPOS_MANTEL;
@@ -67,10 +73,26 @@ export class ManteleriaComponent implements OnInit, OnDestroy {
     { key: 'tipo', label: 'Tipo' },
     { key: 'material', label: 'Material' },
     { key: 'color', label: 'Color' },
-    { key: 'precioAlquiler', label: 'Precio Alquiler', type: 'currency',format: (value: number) => `$${value.toFixed(2)}` },
-    { key: 'stockDisponible', label: 'Stock', type: 'badge',format: (value: number) => value > 10 ? 'bg-success' : value > 0 ? 'bg-warning' : 'bg-danger' },
-    { key: 'disponible', label: 'Estado', type: 'boolean' ,format: (value: boolean) => value ? 'Disponible' : 'No disponible'},
-    { key: 'categoria', label: 'Categoría' }
+    {
+      key: 'precioAlquiler',
+      label: 'Precio Alquiler',
+      type: 'currency',
+      format: (value: number) => `$${value.toFixed(2)}`,
+    },
+    {
+      key: 'stockDisponible',
+      label: 'Stock',
+      type: 'badge',
+      format: (value: number) =>
+        value > 10 ? 'bg-success' : value > 0 ? 'bg-warning' : 'bg-danger',
+    },
+    {
+      key: 'disponible',
+      label: 'Estado',
+      type: 'boolean',
+      format: (value: boolean) => (value ? 'Disponible' : 'No disponible'),
+    },
+    { key: 'categoria', label: 'Categoría' },
   ];
 
   // Formulario reactivo con VALIDACIONES
@@ -89,7 +111,7 @@ export class ManteleriaComponent implements OnInit, OnDestroy {
       stockDisponible: [0, [Validators.required, Validators.min(0)]],
       disponible: [true],
       categoria: ['', Validators.required],
-      imagenUrl: ['']
+      imagenUrl: [''],
     });
   }
 
@@ -102,7 +124,7 @@ export class ManteleriaComponent implements OnInit, OnDestroy {
   }
 
   // Cargar servicios desde el servicio
-  cargarServicios(): void {
+  /*cargarServicios(): void {
     this.loading = true;
     this.notifications = [];
 
@@ -120,15 +142,29 @@ export class ManteleriaComponent implements OnInit, OnDestroy {
     });
 
     this.subscription.add(sub);
+  }*/
+  cargarServicios(): void {
+    this.loading = true;
+    this.manteleriaService.getServicios().subscribe({
+      next: (datos: Manteles[]) => {
+        this.servicios = datos;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar servicios:', error);
+        this.mostrarMensaje('Error al cargar los servicios', 'error');
+        this.loading = false;
+      },
+    });
   }
 
   // CRUD Operations
   crearServicio(): void {
     if (this.servicioForm.valid) {
-      const nuevoServicio: ServicioManteleria = {
+      const nuevoServicio: Manteles = {
         id: 0, // El servicio asignará un ID
         ...this.servicioForm.value,
-        fechaRegistro: new Date()
+        fechaRegistro: new Date(),
       };
 
       this.loading = true;
@@ -143,27 +179,30 @@ export class ManteleriaComponent implements OnInit, OnDestroy {
           console.error('Error creando servicio:', error);
           this.loading = false;
           this.mostrarMensaje('Error al crear el servicio', 'error');
-        }
+        },
       });
 
       this.subscription.add(sub);
     } else {
       this.marcarFormularioComoSucio();
-      this.mostrarMensaje('Por favor, complete todos los campos requeridos correctamente', 'warning');
+      this.mostrarMensaje(
+        'Por favor, complete todos los campos requeridos correctamente',
+        'warning',
+      );
     }
   }
 
   actualizarServicio(): void {
     if (this.servicioForm.valid && this.servicioSeleccionado) {
-      const servicioActualizado: ServicioManteleria = {
+      const servicioActualizado: Manteles = {
         ...this.servicioSeleccionado,
-        ...this.servicioForm.value
+        ...this.servicioForm.value,
       };
 
       this.loading = true;
       const sub = this.manteleriaService.actualizarServicio(servicioActualizado).subscribe({
         next: (servicio) => {
-          const index = this.servicios.findIndex(s => s.id === servicio.id);
+          const index = this.servicios.findIndex((s) => s.id === servicio.id);
           if (index !== -1) {
             this.servicios[index] = servicio;
           }
@@ -175,20 +214,20 @@ export class ManteleriaComponent implements OnInit, OnDestroy {
           console.error('Error actualizando servicio:', error);
           this.loading = false;
           this.mostrarMensaje('Error al actualizar el servicio', 'error');
-        }
+        },
       });
 
       this.subscription.add(sub);
     }
   }
 
-  eliminarServicio(servicio: ServicioManteleria): void {
+  eliminarServicio(servicio: Manteles): void {
     if (confirm(`¿Está seguro de eliminar el servicio "${servicio.nombre}"?`)) {
       this.loading = true;
       const sub = this.manteleriaService.eliminarServicio(servicio.id).subscribe({
         next: (eliminado) => {
           if (eliminado) {
-            this.servicios = this.servicios.filter(s => s.id !== servicio.id);
+            this.servicios = this.servicios.filter((s) => s.id !== servicio.id);
             this.mostrarMensaje('Servicio eliminado exitosamente', 'warning');
           }
           this.loading = false;
@@ -197,7 +236,7 @@ export class ManteleriaComponent implements OnInit, OnDestroy {
           console.error('Error eliminando servicio:', error);
           this.loading = false;
           this.mostrarMensaje('Error al eliminar el servicio', 'error');
-        }
+        },
       });
 
       this.subscription.add(sub);
@@ -217,19 +256,19 @@ export class ManteleriaComponent implements OnInit, OnDestroy {
         error: (error) => {
           console.error('Error buscando:', error);
           this.loading = false;
-        }
+        },
       });
       this.subscription.add(sub);
     } else {
       this.cargarServicios();
     }
   }
-  
-  servicioSeleccionadoParaVer: ServicioManteleria | null = null;
+
+  servicioSeleccionadoParaVer: Manteles | null = null;
   modalVerVisible: boolean = false;
-  
+
   // Manejar acciones de la tabla
-  onTableAction(event: { action: string; item: ServicioManteleria }): void {
+  onTableAction(event: { action: string; item: Manteles }): void {
     const servicio = event.item;
 
     switch (event.action) {
@@ -247,44 +286,44 @@ export class ManteleriaComponent implements OnInit, OnDestroy {
   }
   // Método para cerrar modal
   cerrarModalVer(): void {
-  this.modalVerVisible = false;
-  this.servicioSeleccionadoParaVer = null;
+    this.modalVerVisible = false;
+    this.servicioSeleccionadoParaVer = null;
   }
 
   // Métodos auxiliares para mostrar colores en el modal
   getColorCode(colorName: string): string {
-  const colorMap: { [key: string]: string } = {
-    'Blanco': '#ffffff',
-    'Negro': '#000000',
-    'Rojo': '#dc3545',
-    'Azul': '#0d6efd',
-    'Verde': '#198754',
-    'Amarillo': '#ffc107',
-    'Morado': '#6f42c1',
-    'Rosa': '#d63384',
-    'Gris': '#6c757d',
-    'Beige': '#f5f5dc',
-    'Dorado': '#ffd700',
-    'Plateado': '#c0c0c0',
-    'Multicolor': 'linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet)'
-  };
-  
-  return colorMap[colorName] || '#e9ecef';
+    const colorMap: { [key: string]: string } = {
+      Blanco: '#ffffff',
+      Negro: '#000000',
+      Rojo: '#dc3545',
+      Azul: '#0d6efd',
+      Verde: '#198754',
+      Amarillo: '#ffc107',
+      Morado: '#6f42c1',
+      Rosa: '#d63384',
+      Gris: '#6c757d',
+      Beige: '#f5f5dc',
+      Dorado: '#ffd700',
+      Plateado: '#c0c0c0',
+      Multicolor: 'linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet)',
+    };
+
+    return colorMap[colorName] || '#e9ecef';
   }
 
   getTextColor(colorName: string): string {
-  const lightColors = ['Blanco', 'Amarillo', 'Beige', 'Dorado'];
-  return lightColors.includes(colorName) ? '#000000' : '#ffffff';
+    const lightColors = ['Blanco', 'Amarillo', 'Beige', 'Dorado'];
+    return lightColors.includes(colorName) ? '#000000' : '#ffffff';
   }
 
-  seleccionarServicio(servicio: ServicioManteleria): void {
+  seleccionarServicio(servicio: Manteles): void {
     this.servicioSeleccionado = { ...servicio };
     this.modoEdicion = true;
     this.servicioForm.patchValue(servicio);
     this.scrollToForm();
   }
 
-  verServicio(servicio: ServicioManteleria): void {
+  verServicio(servicio: Manteles): void {
     this.mostrarMensaje(`Viendo: ${servicio.nombre} - ${servicio.descripcion}`, 'info');
   }
 
@@ -295,13 +334,13 @@ export class ManteleriaComponent implements OnInit, OnDestroy {
       disponible: true,
       precioAlquiler: 0,
       precioVenta: 0,
-      stockDisponible: 0
+      stockDisponible: 0,
     });
   }
 
   // Utilidades
   private marcarFormularioComoSucio(): void {
-    Object.keys(this.servicioForm.controls).forEach(key => {
+    Object.keys(this.servicioForm.controls).forEach((key) => {
       const control = this.servicioForm.get(key);
       control?.markAsTouched();
     });
@@ -319,12 +358,12 @@ export class ManteleriaComponent implements OnInit, OnDestroy {
   private mostrarMensaje(
     mensaje: string,
     tipo: 'success' | 'error' | 'info' | 'warning' = 'success',
-    duracion: number = 4000
+    duracion: number = 4000,
   ): void {
     const notification: Notification = {
       message: mensaje,
       type: tipo,
-      duration: duracion
+      duration: duracion,
     };
 
     this.notifications.push(notification);
@@ -339,12 +378,28 @@ export class ManteleriaComponent implements OnInit, OnDestroy {
   }
 
   // Getters para validación en template
-  get nombre() { return this.servicioForm.get('nombre'); }
-  get descripcion() { return this.servicioForm.get('descripcion'); }
-  get tipo() { return this.servicioForm.get('tipo'); }
-  get material() { return this.servicioForm.get('material'); }
-  get color() { return this.servicioForm.get('color'); }
-  get precioAlquiler() { return this.servicioForm.get('precioAlquiler'); }
-  get stockDisponible() { return this.servicioForm.get('stockDisponible'); }
-  get categoria() { return this.servicioForm.get('categoria'); }
+  get nombre() {
+    return this.servicioForm.get('nombre');
+  }
+  get descripcion() {
+    return this.servicioForm.get('descripcion');
+  }
+  get tipo() {
+    return this.servicioForm.get('tipo');
+  }
+  get material() {
+    return this.servicioForm.get('material');
+  }
+  get color() {
+    return this.servicioForm.get('color');
+  }
+  get precioAlquiler() {
+    return this.servicioForm.get('precioAlquiler');
+  }
+  get stockDisponible() {
+    return this.servicioForm.get('stockDisponible');
+  }
+  get categoria() {
+    return this.servicioForm.get('categoria');
+  }
 }

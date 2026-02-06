@@ -4,11 +4,11 @@ import { Observable } from 'rxjs';
 import { Salon } from '../models/salon';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ServSalonesApi {
   // Asegúrate de que en db.json tengas "salones": [ ... ]
-  private jsonUrl = 'http://localhost:5223/api/Salons';
+  private jsonUrl = 'http://localhost:5223/api/Salones';
 
   constructor(private http: HttpClient) {}
 

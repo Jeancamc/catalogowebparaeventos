@@ -7,5 +7,5 @@ export interface Salon {
   ubicacion: string;
   tipoEvento: string;
   serviciosIncluidos?: string;
-  disponible: string; // 'Sí' o 'No'
+  disponible: boolean; // 'Sí' o 'No'
 }

@@ -10,7 +10,7 @@ import {
 import { SimpleTableComponent } from '../shared/data-table/data-table';
 import { NotificationComponent, Notification } from '../shared/notification/notification';
 import { Salon } from '../../models/salon';
-import { Card } from "../shared/card/card";
+import { Card } from '../shared/card/card';
 import { ServSalonesApi } from '../../services/serv-salones-api';
 
 @Component({
@@ -22,14 +22,14 @@ import { ServSalonesApi } from '../../services/serv-salones-api';
     ReactiveFormsModule,
     SimpleTableComponent,
     NotificationComponent,
-    Card
-],
+    Card,
+  ],
   templateUrl: './salones.html',
   styleUrls: ['./salones.css'],
 })
 export class SalonesComponent implements OnInit {
   private fb = inject(FormBuilder);
-  private salonesService = inject(ServSalonesApi);;
+  private salonesService = inject(ServSalonesApi);
 
   // Variables del componente
   salones: Salon[] = [];
@@ -88,10 +88,9 @@ export class SalonesComponent implements OnInit {
         console.error('Error al cargar salones:', error);
         this.mostrarMensaje('Error al cargar los salones', 'error');
         this.loading = false;
-      }
+      },
     });
   }
-
 
   // CRUD Operations
   crearSalon(): void {
@@ -110,7 +109,7 @@ export class SalonesComponent implements OnInit {
       ubicacion: formValue.ubicacion,
       tipoEvento: formValue.tipoEvento,
       serviciosIncluidos: formValue.serviciosIncluidos,
-      disponible: formValue.disponible ? 'Sí' : 'No'
+      disponible: formValue.disponible ? true : false,
     };
 
     this.salonesService.create(nuevoSalon).subscribe({
@@ -123,11 +122,11 @@ export class SalonesComponent implements OnInit {
       },
       error: () => {
         this.mostrarMensaje('Error al crear el salón', 'error');
-      }
+      },
     });
   }
 
-actualizarSalon(): void {
+  actualizarSalon(): void {
     if (this.salonForm.invalid || !this.salonSeleccionado) {
       this.salonForm.markAllAsTouched();
       return;
@@ -138,7 +137,7 @@ actualizarSalon(): void {
     const salonActualizado: Salon = {
       ...this.salonSeleccionado,
       ...formValue,
-      disponible: formValue.disponible ? 'Sí' : 'No'
+      disponible: formValue.disponible ? 'Sí' : 'No',
     };
 
     this.salonesService.update(salonActualizado).subscribe({
@@ -149,11 +148,11 @@ actualizarSalon(): void {
       },
       error: () => {
         this.mostrarMensaje('Error al actualizar el salón', 'error');
-      }
+      },
     });
   }
- 
-    eliminarSalon(salon: Salon): void {
+
+  eliminarSalon(salon: Salon): void {
     if (!salon.id) {
       this.mostrarMensaje('No se puede eliminar un salón sin id', 'error');
       return;
@@ -167,7 +166,7 @@ actualizarSalon(): void {
         },
         error: () => {
           this.mostrarMensaje('Error al eliminar el salón', 'error');
-        }
+        },
       });
     }
   }
@@ -207,7 +206,7 @@ actualizarSalon(): void {
 
   private mostrarMensaje(
     mensaje: string,
-    tipo: 'success' | 'error' | 'info' | 'warning' = 'success'
+    tipo: 'success' | 'error' | 'info' | 'warning' = 'success',
   ): void {
     const notification: Notification = {
       message: mensaje,
@@ -230,7 +229,7 @@ actualizarSalon(): void {
   getEstadisticas() {
     return {
       total: this.salones.length,
-      disponibles: this.salones.filter((s) => s.disponible === 'Sí').length,
+      disponibles: this.salones.filter((s) => s.disponible === true).length,
       capacidadTotal: this.salones.reduce((sum, salon) => sum + salon.capacidad, 0),
     };
   }

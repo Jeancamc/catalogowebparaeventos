@@ -5,12 +5,12 @@ import { Observable } from 'rxjs';
 import { Evento } from '../models/evento';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EventoService {
-  private apiUrl = 'api/eventos';
+  private apiUrl = 'http://localhost:5223/api/Eventos';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAll(): Observable<Evento[]> {
     return this.http.get<Evento[]>(`${this.apiUrl}`);

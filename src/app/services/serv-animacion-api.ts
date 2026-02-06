@@ -4,12 +4,11 @@ import { Observable } from 'rxjs';
 import { Animacion } from '../models/animacion';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ServAnimacionApi {
-
   // IMPORTANTE: en tu db.json (del json-server) debe existir "animacion": []
-  private jsonUrl = 'http://localhost:5223/api/Animacions';
+  private jsonUrl = 'http://localhost:5223/api/Animaciones';
 
   constructor(private http: HttpClient) {}
 
