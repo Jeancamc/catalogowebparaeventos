@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="/">
+    <base href="/" />
     <title>Eventos Elegantes</title>
 
     <!-- Bootstrap -->
@@ -35,47 +35,40 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
-            
             <li class="nav-item">
-              <a class="nav-link active"
-                routerLink="inicio"
-                routerLinkActive="active">Inicio</a>
+              <a class="nav-link active" routerLink="inicio" routerLinkActive="active">Inicio</a>
             </li>
             <li class="nav-item">
-              <a
-                class="nav-link active"
-                routerLink="manteleria"
-                routerLinkActive="active"
+              <a class="nav-link active" routerLink="manteleria" routerLinkActive="active"
                 >Mantelería</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link active" routerLink="salones" routerLinkActive="active"  style="cursor: pointer;">Salones</a>
+              <a class="nav-link active" routerLink="login" routerLinkActive="active">Login</a>
             </li>
-
             <li class="nav-item">
-              <a 
+              <a
                 class="nav-link active"
-                routerLink="decoracion-crud"
+                routerLink="salones"
                 routerLinkActive="active"
-              >Decoración</a>
+                style="cursor: pointer"
+                >Salones</a
+              >
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" 
-              routerLink="musica" 
-              routerLinkActive="active"
-              >Música</a>
+              <a class="nav-link active" routerLink="decoracion-crud" routerLinkActive="active"
+                >Decoración</a
+              >
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" 
-              routerLink="animacion" 
-              routerLinkActive="active">
-              Animación</a>
+              <a class="nav-link" routerLink="musica" routerLinkActive="active">Música</a>
             </li>
 
-
+            <li class="nav-item">
+              <a class="nav-link" routerLink="animacion" routerLinkActive="active"> Animación</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -86,9 +79,7 @@
     <section class="hero">
       <div class="container">
         <h1>Servicios para Eventos</h1>
-        <p>
-          Encuentra el servicio perfecto para hacer de tu evento una experiencia inolvidable.
-        </p>
+        <p>Encuentra el servicio perfecto para hacer de tu evento una experiencia inolvidable.</p>
       </div>
     </section>
 
@@ -125,7 +116,7 @@
         </div>
 
         <div class="text-center small mt-3">
-          © {{year}} Eventia — Todos los derechos reservados.
+          © {{ year }} Eventia — Todos los derechos reservados.
         </div>
       </div>
     </footer>
